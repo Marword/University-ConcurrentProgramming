@@ -4,4 +4,4 @@
 
 | Name Surname (initials) | GUID                                     |
 | ----------------------- | ---------------------------------------- |
-| Marcin J                | `{2DCF4E9E-3020-493A-850D-842FCA0D0ED6}` |
+| Marcin J                | `{FEA70D4E-50D0-4C74-BB69-B7CD848D8A39}` |
