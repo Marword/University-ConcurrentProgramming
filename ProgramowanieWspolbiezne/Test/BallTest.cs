@@ -29,27 +29,21 @@ namespace Test
         {
             Assert.IsNotNull(_testBall);
 
-            Assert.AreEqual(_testCoordX, _testBall.CoordX);
-            Assert.AreEqual(_testCoordY, _testBall.CoordY);
+            Assert.AreEqual(_testCoordX, _testBall.Position.X);
+            Assert.AreEqual(_testCoordY, _testBall.Position.Y);
             Assert.AreEqual(_testRadius, _testBall.Radius);
         }
 
         [TestMethod]
         public void SetAttTest()
         {
-            int newRadius = _testRadius + 1;
             int newCoordX = _testCoordX + 1;
             int newCoordY = _testCoordY + 1;
 
-            _testBall.Radius = newRadius;
-            _testBall.CoordX = newCoordX;
-            _testBall.CoordY = newCoordY;
+            Vector2 newPos = new Vector2(newCoordY, newCoordX);
 
-            
-            Assert.AreEqual(newRadius, _testBall.Radius);
-            Assert.AreEqual(newCoordY, _testBall.CoordY);   
-            Assert.AreEqual(newCoordX, _testBall.CoordX);   
-           
+            Assert.AreEqual(newPos, _testBall.Position);
+
         }
     }
 }
