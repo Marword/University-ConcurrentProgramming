@@ -1,13 +1,14 @@
-﻿using System.Windows;
+﻿using System.Windows.Controls;
 
-namespace Presentation.View
+
+namespace Presentation.View.Views
 {
     /// <summary>
     /// Logika interakcji dla klasy SimWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class SimWindow : UserControl
     {
-        public MainWindow()
+        public SimWindow()
         {
             InitializeComponent();
         }
