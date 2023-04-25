@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.ComponentModel;
 using Presentation.ViewModel;
+using System.ComponentModel;
 
 namespace Presentation.ViewModelTests
 {
