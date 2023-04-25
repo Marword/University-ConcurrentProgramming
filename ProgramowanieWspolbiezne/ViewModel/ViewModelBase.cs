@@ -1,7 +1,6 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
-namespace ViewModel
+namespace Presentation.ViewModel
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
@@ -12,7 +11,5 @@ namespace ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public virtual void Dispose()
-        { }
     }
 }

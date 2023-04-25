@@ -1,36 +1,80 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Presentation.Model;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Model;
+using System.Diagnostics;
+using System.Windows.Input;
 
 
-namespace ViewModel
+namespace Presentation.ViewModel
 {
-    public class SimulationViewModel : ViewModelBase
+    public class SimViewModel : ViewModelBase
     {
-        public IEnumerable<BallModel> Balls => _balls;
-        private readonly ObservableCollection<BallModel> _balls;
-        private LogicModel _logic;
-        private int _ballsCount;
 
-        public SimulationViewModel(LogicModel logic)
-        {
-            _logic = logic;
-        }
+        private ObservableCollection<BallModel> _balls;
+        private readonly ModelApi _logic;
+        private readonly IChecker<int> _ballsCountChecker;
+        private int _ballsCount = 10;
+        private bool _isSimulationOn = false;
+        public IEnumerable<BallModel> Balls => _balls;
+        public ICommand StartSimCommand { get; }
+        public ICommand StopSimCommand { get; }
 
         public int BallsCount
         {
             get => _ballsCount;
             set
             {
-                _ballsCount = value;
-                RaisePropertyChanged(nameof(BallsCount));
+                if (_ballsCountChecker.Check(value))
+                {
+                    _ballsCount = value;
+                    RaisePropertyChanged(nameof(BallsCount));
+                }
+                else _ballsCount = 1;
+
             }
         }
 
-        public CommandBase StartSimulation { get; }
+        public bool IsSimulationOn
+        {
+            get => _isSimulationOn;
+            private set
+            {
+                _isSimulationOn = value;
+                RaisePropertyChanged(nameof(IsSimulationOn));
+            }
+        }
+
+        public SimViewModel(ModelApi model = default, IChecker<int> ballsCountChecker = default) : base()
+        {
+            _logic = model ?? ModelApi.CreateModelApi();
+            _ballsCountChecker = ballsCountChecker ?? new BallsCountChecker();
+            StartSimCommand = new StartSimCommand(this);
+            StopSimCommand = new StopSimCommand(this);
+            _logic.SetObserver(UpdateBalls);
+
+
+        }
+
+        public void StartSim()
+        {
+            IsSimulationOn = true;
+            Trace.WriteLine("Simulation just started");
+            _logic.SpawnBalls(BallsCount);
+            _logic.Start();
+        }
+
+        public void StopSim()
+        {
+            IsSimulationOn = false;
+            Trace.WriteLine("Simulation just ended");
+            _logic.Stop();
+        }
+
+        public void UpdateBalls(IEnumerable<BallModel> ballModels = default)
+        {
+            if (ballModels is null) ballModels = new List<BallModel>();
+            _balls = new ObservableCollection<BallModel>(ballModels);
+            RaisePropertyChanged(nameof(Balls));
+        }
+
     }
 }

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
-namespace ViewModel
+namespace Presentation.ViewModel
 {
     public abstract class CommandBase : ICommand
     {
