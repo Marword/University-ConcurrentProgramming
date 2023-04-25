@@ -1,10 +1,14 @@
 ﻿namespace Logic
 {
 
-    public struct Vector2
+    public struct Vector2 : IEquatable<Vector2>
     {
-        public static Vector2 Zero = new Vector2(0, 0);
-        public static Vector2 One = new Vector2(1, 1);
+        public static readonly Vector2 Zero = new Vector2(0, 0);
+        public static readonly Vector2 One = new Vector2(1, 1);
+        public static readonly Vector2 Up = new Vector2(0f, 1f);
+        public static readonly Vector2 Down = new Vector2(0f, -1f);
+        public static readonly Vector2 Left = new Vector2(-1f, 0f);
+        public static readonly Vector2 Right = new Vector2(1f, 0f);
 
         public float X { get; set; }
         public float Y { get; set; }
@@ -15,7 +19,7 @@
             Y = y;
         }
 
-        public static float Distnace(Vector2 point1, Vector2 point2)
+        public static float Distance(Vector2 point1, Vector2 point2)
         {
             return (float)Math.Sqrt(DistanceSquared(point1, point2));
         }
@@ -32,7 +36,7 @@
             return new Vector2
             {
                 X = lhs.X + rhs.X,
-                Y = lhs.Y + rhs.Y
+                Y = lhs.Y + rhs.Y,
             };
         }
 
@@ -41,7 +45,7 @@
             return new Vector2
             {
                 X = lhs.X - rhs.X,
-                Y = lhs.Y - rhs.Y
+                Y = lhs.Y - rhs.Y,
             };
         }
 
@@ -50,7 +54,7 @@
             return new Vector2
             {
                 X = lhs.X * rhs.X,
-                Y = lhs.Y * rhs.Y
+                Y = lhs.Y * rhs.Y,
             };
         }
 
@@ -59,7 +63,33 @@
             return new Vector2
             {
                 X = lhs.X / rhs.X,
-                Y = lhs.Y / rhs.Y
+                Y = lhs.Y / rhs.Y,
+            };
+        }
+        public static Vector2 operator -(Vector2 vector)
+        {
+            return new Vector2
+            {
+                X = -vector.X,
+                Y = -vector.Y,
+            };
+        }
+
+        public static Vector2 operator *(Vector2 lhs, float d)
+        {
+            return new Vector2
+            {
+                X = lhs.X * d,
+                Y = lhs.Y * d,
+            };
+        }
+
+        public static Vector2 operator /(Vector2 lhs, float d)
+        {
+            return new Vector2
+            {
+                X = lhs.X / d,
+                Y = lhs.Y / d,
             };
         }
 
@@ -86,9 +116,15 @@
 
         public override bool Equals(object obj)
         {
-            return obj is Vector2 vector &&
-                    X == vector.X &&
-                    Y == vector.Y;
+            return obj is Vector2 vector
+                && Equals(vector);
+        }
+
+        public bool Equals(Vector2 other)
+        {
+            float xDiff = X - other.X;
+            float yDiff = Y - other.Y;
+            return xDiff * xDiff + yDiff * yDiff < 9.99999944E-11f;
         }
 
         public override int GetHashCode()

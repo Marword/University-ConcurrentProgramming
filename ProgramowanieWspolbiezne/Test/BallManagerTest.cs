@@ -1,22 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Logic;
+﻿using Logic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Test
 {
     [TestClass]
     public class BallManagerTest
     {
-        readonly int _testRadius;
-        readonly int _testHeight;
-        readonly int _testWidth;
-        readonly BallManager _ballManager;
+        private const int TestRadius = 2;
+        private const int TestHeight = 100;
+        private const int TestWidth = 100;
+        private readonly BallManager _ballManager = new BallManager(new Game(TestHeight, TestWidth), TestRadius);
 
-        public BallManagerTest()
-        {
-            _testHeight = 100;
-            _testWidth = 100;
-            _testRadius = 2;
-            _ballManager = new(_testHeight, _testWidth, _testRadius);
-        }
 
         [TestMethod]
         public void ConstructorTest()
@@ -34,22 +27,19 @@ namespace Test
             foreach (Ball b in balls)
             {
                 Assert.IsNotNull(b);
-                Assert.AreEqual(_testRadius, b.Radius);
-                Assert.IsTrue(IsBetween(b.CoordX, 0, _testWidth));
-                Assert.IsTrue(IsBetween(b.CoordY, 0, _testHeight));
+                Assert.AreEqual(TestRadius, b.Radius);
+                Assert.IsTrue(IsInside(b.Coordinates.X, 0, TestWidth));
+                Assert.IsTrue(IsInside(b.Coordinates.Y, 0, TestHeight));
                 count++;
 
             }
             Assert.AreEqual(ballNum, count);
         }
 
-        private bool IsBetween(int value, int bottom, int top)
+        private static bool IsInside(float value, float bottom, float top)
         {
-            if (value <= top - _testRadius && value >= bottom + _testRadius)
-            {
-                return true;
-            }
-            return false;
+
+            return value <= top - TestRadius && value >= bottom + TestRadius;
         }
     }
 }
