@@ -1,13 +1,14 @@
 ﻿using Logic;
 
-namespace Model
+namespace Presentation.Model
 {
     public class BallModel
     {
-        private readonly Ball _ball;
+        public readonly Ball _ball;
 
+        public Vector2 Coordinates => _ball.Coordinates;
+        public Vector2 Tempo => _ball.Tempo;
         public int Radius => _ball.Radius;
-        public Vector2 Position => _ball.Position;
 
 
         public BallModel(Ball ball) { _ball = ball; }
