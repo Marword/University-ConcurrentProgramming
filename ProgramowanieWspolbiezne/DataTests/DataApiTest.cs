@@ -19,7 +19,9 @@ namespace DataTests
             DataAbstractApi dataApi = DataAbstractApi.CreateDataApi();
             Assert.AreNotEqual(dataApi.GameHeight, default);
             Assert.AreNotEqual(dataApi.GameWidth, default);
-            Assert.AreNotEqual(dataApi.BallRadius, default);
+            Assert.AreNotEqual(dataApi.MinDiameter, default);
+            Assert.AreNotEqual(dataApi.MaxDiameter, default);
+            Assert.AreNotEqual(dataApi.MaxTempo, default);
         }
     }
 }
