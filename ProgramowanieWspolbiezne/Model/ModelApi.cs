@@ -1,26 +1,104 @@
-﻿
-using Logic;
+﻿using Logic;
 
 
-namespace Presentation.Model
+namespace Model
 {
-    public abstract class ModelApi
+    internal class ModelApi : ModelAbstractApi
     {
-        protected Observer _observer;
 
 
-        public delegate void Observer(IEnumerable<BallModel> ballModels);
-        public abstract void NotifyUpdate();
-        public abstract void SetObserver(Observer observer);
-
-        public abstract void SpawnBalls(int count);
-        public abstract void Start();
-        public abstract void Stop();
-        public abstract IEnumerable<BallModel> MapBallToBallModel();
-
-        public static ModelApi CreateModelApi(LogicAbstractApi logic = default)
+        private readonly LogicAbstractApi _logic;
+        private readonly ISet<IObserver<IBallModel>> _observers;
+        private readonly IDictionary<IBall, IBallModel> _ballToBallModel;
+        private IDisposable? _unsubscriber;
+        public ModelApi(LogicAbstractApi? logic = default)
         {
-            return new Model(logic ?? LogicAbstractApi.CreateLogicApi());
+            _logic = logic ?? LogicAbstractApi.CreateLogicApi();
+            _observers = new HashSet<IObserver<IBallModel>>();
+            _ballToBallModel = new Dictionary<IBall, IBallModel>();
         }
+
+        public override void Start(int ballsCount)
+        {
+            Follow(_logic);
+            _logic.MakeBalls(ballsCount);
+        }
+
+        public override void Stop()
+        {
+            _logic.Dispose();
+        }
+
+        #region Observer
+
+
+        public void Follow(IObservable<IBall> provider)
+        {
+            _unsubscriber = provider.Subscribe(this);
+        }
+        public override void OnCompleted()
+        {
+            _unsubscriber?.Dispose();
+            EndTransmission();
+        }
+
+
+        public override void OnNext(IBall ball)
+        {
+            _ballToBallModel.TryGetValue(ball, out var ballModel);
+            if (ballModel is null)
+            {
+                ballModel = new BallModel(ball);
+                _ballToBallModel.Add(ball, ballModel);
+            }
+            TrackBall(ballModel);
+        }
+
+        #endregion
+
+        #region Provider
+
+
+
+        public override IDisposable Subscribe(IObserver<IBallModel> observer)
+        {
+            _observers.Add(observer);
+            return new Unsubscriber(_observers, observer);
+        }
+
+        private void TrackBall(IBallModel ball)
+        {
+            foreach (var observer in _observers)
+            {
+                observer.OnNext(ball);
+            }
+        }
+
+        private void EndTransmission()
+        {
+            foreach (var observer in _observers)
+            {
+                observer.OnCompleted();
+            }
+            _observers.Clear();
+        }
+
+        private class Unsubscriber : IDisposable
+        {
+            private readonly ISet<IObserver<IBallModel>> _observers;
+            private readonly IObserver<IBallModel> _observer;
+            public Unsubscriber(ISet<IObserver<IBallModel>> observers, IObserver<IBallModel> observer)
+            {
+                _observers = observers;
+                _observer = observer;
+            }
+
+            public void Dispose()
+            {
+                if (_observers is not null) _observers.Remove(_observer);
+            }
+        }
+
+        #endregion
     }
 }

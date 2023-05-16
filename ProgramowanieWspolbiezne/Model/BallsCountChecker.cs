@@ -20,5 +20,10 @@ namespace Presentation.Model
         {
             return amount.Inside(_min, _max);
         }
+
+        public bool CheckNotCorrect(int amount)
+        {
+            return !Check(amount);
+        }
     }
 }
