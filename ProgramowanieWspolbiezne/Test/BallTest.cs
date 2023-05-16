@@ -1,33 +1,29 @@
 using Logic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
-namespace Test
+
+namespace Tests
 {
     [TestClass]
     public class BallTest
     {
-        readonly int _testCoordX;
-        readonly int _testCoordY;
-        readonly int _testRadius;
-        readonly float _testTempoX;
-        readonly float _testTempoY;
+        private static readonly int _testCoordX = 2;
+        private static readonly int _testCoordY = 2;
+        private static readonly int _testDiameter = 1;
+        private static readonly float _testTempoX = 0.3f;
+        private static readonly float _testTempoY = -0.2f;
 
 
-        readonly Ball _testBall;
+        private readonly Ball _testBall;
+        private readonly Game _testGame;
 
         public BallTest()
         {
-            _testCoordX = 2;
-            _testCoordY = 2;
-            _testRadius = 1;
-            _testTempoX = 0.3f;
-            _testTempoY = -0.2f;
-
             Vector2 coordinates = new Vector2(_testCoordX, _testCoordY);
             Vector2 tempo = new Vector2(_testTempoX, _testTempoY);
 
-            _testBall = new Ball(_testRadius, coordinates, tempo);
+            _testGame = new Game(100, 100);
+            _testBall = new Ball(_testDiameter, coordinates, tempo, _testGame);
         }
 
 
@@ -38,52 +34,38 @@ namespace Test
 
             Assert.AreEqual(_testCoordX, _testBall.Coordinates.X);
             Assert.AreEqual(_testCoordY, _testBall.Coordinates.Y);
-            Assert.AreEqual(_testRadius, _testBall.Radius);
+            Assert.AreEqual(_testDiameter, _testBall.Diameter);
         }
 
-        [TestMethod]
-        public void SetAttributesTest()
-        {
-            int diff = 1;
-            int newXPos = _testCoordX + diff;
-            int newYPos = _testCoordY + diff;
-            Vector2 newPos = new Vector2(newXPos, newYPos);
-
-            _testBall.Coordinates = newPos;
-            Assert.AreEqual(newPos, _testBall.Coordinates);
-        }
 
         [TestMethod]
         public void MoveTest()
         {
-            Vector2 boundX = new Vector2(0, 100);
-            Vector2 boundY = new Vector2(0, 100);
-            Vector2 tempo = new Vector2(-2.5f, 0);
+            float delta = 100f;
 
-            _testBall.Tempo = tempo;
+            Ball ball = new Ball(_testDiameter, new Vector2(_testCoordX, _testCoordY), Vector2.Zero, _testGame);
 
-            _testBall.Move(boundX, boundY, 1);
-            Assert.AreEqual(_testBall.Coordinates.X, _testCoordX - 2.5);
+            ball.Tempo = new Vector2(0, -2.5f);
+            Assert.AreEqual(ball.Tempo.X, 0f);
 
-            _testBall.Move(boundX, boundY, 1);
-            _testBall.Move(boundX, boundY, 1);
-            _testBall.Move(boundX, boundY, 1);
+            ball.Move(delta);
+            Assert.AreEqual(ball.Coordinates.X, _testCoordX);
 
-            Assert.AreEqual(_testBall.Tempo.X, -tempo.X);
+            ball.Move(delta);
+            ball.Move(delta);
+            ball.Move(delta);
 
-            tempo = new Vector2(0, -2.5f);
-            _testBall.Tempo = tempo;
+            ball.Tempo = new Vector2(3f, 5f);
+            Assert.AreEqual(ball.Tempo, new Vector2(3, 5f));
 
-            _testBall.Move(boundX, boundY, 1);
-            Assert.AreEqual(_testBall.Coordinates.Y, _testCoordY - 2.5);
+            ball.Move(delta);
+            Assert.AreEqual(ball.Coordinates.Y, 7f);
 
-            _testBall.Move(boundX, boundY, 1);
-            _testBall.Move(boundX, boundY, 1);
-            _testBall.Move(boundX, boundY, 1);
+            ball.Move(delta);
+            ball.Move(delta);
+            ball.Move(delta);
 
-            Assert.AreEqual(_testBall.Tempo, -tempo);
-
-            Assert.ThrowsException<ArgumentException>(() => _testBall.Move(boundX, boundY, 2));
+            Assert.AreEqual(ball.Coordinates, new Vector2(14f, 22f));
         }
 
         [TestMethod]
