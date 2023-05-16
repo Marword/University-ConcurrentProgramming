@@ -1,6 +1,7 @@
-﻿using System.ComponentModel;
+﻿using Presentation.ViewModel;
+using System.ComponentModel;
 
-namespace Presentation.ViewModel
+namespace ViewModel
 {
     public class StartSimCommand : CommandBase
     {
@@ -13,19 +14,19 @@ namespace Presentation.ViewModel
 
         }
 
-        public override bool CanExecute(object param)
+        public override bool CanExecute(object? param)
         {
-            return base.CanExecute(param) && !_simulationViewModel.IsSimulationOn;
+            return base.CanExecute(param) && !_simulationViewModel.IsSimRunning;
         }
 
-        public override void Execute(object param)
+        public override void Execute(object? param)
         {
             _simulationViewModel.StartSim();
         }
 
-        public void OnSimViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        public void OnSimViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(SimViewModel.IsSimulationOn))
+            if (e.PropertyName == nameof(SimViewModel.IsSimRunning))
             {
                 OnCanExecuteChanged();
             }

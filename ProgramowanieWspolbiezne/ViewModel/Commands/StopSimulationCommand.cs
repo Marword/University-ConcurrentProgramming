@@ -1,6 +1,7 @@
-﻿using System.ComponentModel;
+﻿using Presentation.ViewModel;
+using System.ComponentModel;
 
-namespace Presentation.ViewModel
+namespace ViewModel
 {
     public class StopSimCommand : CommandBase
     {
@@ -13,20 +14,20 @@ namespace Presentation.ViewModel
             _simulationViewModel.PropertyChanged += OnSimViewModelPropertyChanged;
         }
 
-        public override bool CanExecute(object parameter)
+        public override bool CanExecute(object? parameter)
         {
             return base.CanExecute(parameter)
-                && _simulationViewModel.IsSimulationOn;
+                && _simulationViewModel.IsSimRunning;
         }
 
-        public override void Execute(object parameter)
+        public override void Execute(object? parameter)
         {
             _simulationViewModel.StopSim();
         }
 
-        private void OnSimViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnSimViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(_simulationViewModel.IsSimulationOn))
+            if (e.PropertyName == nameof(_simulationViewModel.IsSimRunning))
             {
                 OnCanExecuteChanged();
             }
