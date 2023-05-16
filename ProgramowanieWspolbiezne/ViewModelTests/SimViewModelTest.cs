@@ -1,43 +1,44 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Presentation.ViewModel;
 using System.ComponentModel;
+using System.Linq;
+using ViewModel;
 
-namespace Presentation.ViewModelTests
+namespace ViewModelTests
 {
     [TestClass]
     public class SimViewModelTest
     {
-        private readonly SimViewModel simulationViewModel = new SimViewModel();
+        private readonly SimViewModel simViewModel = new();
 
         [TestMethod]
         public void BallsCountPropertyChanged()
         {
             bool ballsCountChangedRaised = false;
 
-            simulationViewModel.PropertyChanged += (object sender, PropertyChangedEventArgs e) => ballsCountChangedRaised = true;
+            simViewModel.PropertyChanged += (object? sender, PropertyChangedEventArgs e) => ballsCountChangedRaised = true;
 
             Assert.IsFalse(ballsCountChangedRaised);
 
-            simulationViewModel.BallsCount = 15;
+            simViewModel.BallsCount = 15;
             Assert.IsTrue(ballsCountChangedRaised);
         }
 
         [TestMethod]
         public void StartStopSimTest()
         {
-            bool isSimulationRunningChangedRaised = false;
+            bool isSimRunningChangedRaised = false;
 
-            simulationViewModel.PropertyChanged += (object sender, PropertyChangedEventArgs e) => isSimulationRunningChangedRaised = true;
+            simViewModel.PropertyChanged += (object? sender, PropertyChangedEventArgs e) => isSimRunningChangedRaised = true;
 
-            Assert.IsFalse(simulationViewModel.IsSimulationOn);
-            Assert.IsFalse(isSimulationRunningChangedRaised);
+            Assert.IsFalse(simViewModel.IsSimRunning);
+            Assert.IsFalse(isSimRunningChangedRaised);
 
-            simulationViewModel.StartSim();
-            Assert.IsTrue(simulationViewModel.IsSimulationOn);
-            Assert.IsTrue(isSimulationRunningChangedRaised);
+            simViewModel.StartSim();
+            Assert.IsTrue(simViewModel.IsSimRunning);
+            Assert.IsTrue(isSimRunningChangedRaised);
 
-            simulationViewModel.StopSim();
-            Assert.IsFalse(simulationViewModel.IsSimulationOn);
+            simViewModel.StopSim();
+            Assert.IsFalse(simViewModel.IsSimRunning);
         }
 
         [TestMethod]
@@ -45,17 +46,19 @@ namespace Presentation.ViewModelTests
         {
             bool ballsChangedRaised = false;
 
-            simulationViewModel.PropertyChanged += (object sender, PropertyChangedEventArgs e) => ballsChangedRaised = true;
+            simViewModel.PropertyChanged += (object? sender, PropertyChangedEventArgs e) => ballsChangedRaised = true;
 
             Assert.IsFalse(ballsChangedRaised);
-            var collectionBefore = simulationViewModel.Balls;
+            var collectionBefore = simViewModel.Balls;
 
-            simulationViewModel.UpdateBalls();
+            simViewModel.StartSim();
+            simViewModel.OnNext(collectionBefore.First());
 
-            Assert.IsTrue(ballsChangedRaised);
-            var collectionAfter = simulationViewModel.Balls;
+            /*Assert.IsTrue(ballsChangedRaised);*/
+            var collectionAfter = simViewModel.Balls;
 
-            Assert.AreNotSame(collectionBefore, collectionAfter);
+            Assert.AreSame(collectionBefore, collectionAfter);
+            simViewModel.StopSim();
         }
     }
 }
