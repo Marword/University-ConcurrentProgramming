@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Model;
 using Presentation.Model;
 
 namespace ModelTests
@@ -9,7 +10,7 @@ namespace ModelTests
         [TestMethod]
         public void CreateModelApiTest()
         {
-            ModelApi modelApi = ModelApi.CreateModelApi();
+            ModelAbstractApi modelApi = ModelAbstractApi.CreateModelApi();
             Assert.IsNotNull(modelApi);
         }
     }
