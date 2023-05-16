@@ -4,23 +4,15 @@
 
 namespace Logic
 {
-    public abstract class LogicAbstractApi
+    public abstract class LogicAbstractApi : IObservable<IBall>, IDisposable
     {
-        protected Observer _observer;
-        public abstract Ball[] Balls { get; }
-
-        public delegate void Observer();
-        public abstract void NotifyUpdate();
-        public abstract void SetObserver(Observer observer);
-
-        public abstract void MakeBalls(int count);
-        public abstract void InvSim();
-        public abstract void StartSim();
-        public abstract void StopSim();
+        public abstract IEnumerable<IBall> MakeBalls(int count);
+        public abstract IDisposable Subscribe(IObserver<IBall> observer);
+        public abstract void Dispose();
 
         public static LogicAbstractApi CreateLogicApi(DataAbstractApi data = default)
         {
-            return new SimController(data ?? DataAbstractApi.CreateDataApi());
+            return new LogicApi(data ?? DataAbstractApi.CreateDataApi());
         }
     }
 }

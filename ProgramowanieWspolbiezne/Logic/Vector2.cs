@@ -10,8 +10,8 @@
         public static readonly Vector2 Left = new Vector2(-1f, 0f);
         public static readonly Vector2 Right = new Vector2(1f, 0f);
 
-        public float X { get; set; }
-        public float Y { get; set; }
+        public float X { get; init; }
+        public float Y { get; init; }
 
         public Vector2(float x, float y)
         {
@@ -30,6 +30,46 @@
             float yDifference = point1.Y - point2.Y;
             return xDifference * xDifference + yDifference * yDifference;
         }
+
+        public static float Scalar(Vector2 point1, Vector2 point2)
+        {
+            return point1.X * point2.X + point1.Y * point2.Y;
+        }
+
+        public bool IsZero()
+        {
+            return Equals(Zero);
+        }
+
+        public override string ToString()
+        {
+            return $"[{X}, {Y}]";
+        }
+
+        public void Deconstruct(out float x, out float y)
+        {
+            x = X;
+            y = Y;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Vector2 vector
+                && Equals(vector);
+        }
+
+        public bool Equals(Vector2 other)
+        {
+            float xDiff = X - other.X;
+            float yDiff = Y - other.Y;
+            return xDiff * xDiff + yDiff * yDiff < 9.99999944E-11f;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(X, Y);
+        }
+
 
         public static Vector2 operator +(Vector2 lhs, Vector2 rhs)
         {
@@ -103,36 +143,6 @@
             return !(lhs == rhs);
         }
 
-        public override string ToString()
-        {
-            return $"[{X}, {Y}]";
-        }
 
-        public void Deconstruct(out float x, out float y)
-        {
-            x = X;
-            y = Y;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Vector2 vector
-                && Equals(vector);
-        }
-
-        public bool Equals(Vector2 other)
-        {
-            float xDiff = X - other.X;
-            float yDiff = Y - other.Y;
-            return xDiff * xDiff + yDiff * yDiff < 9.99999944E-11f;
-        }
-
-        public override int GetHashCode()
-        {
-            int hashCode = 1861411795;
-            hashCode = hashCode * -1521134295 + X.GetHashCode();
-            hashCode = hashCode * -1521134295 + Y.GetHashCode();
-            return hashCode;
-        }
     }
 }
