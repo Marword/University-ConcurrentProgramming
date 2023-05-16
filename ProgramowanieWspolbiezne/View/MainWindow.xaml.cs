@@ -3,11 +3,11 @@
 namespace Presentation.View
 {
     /// <summary>
-    /// Logika interakcji dla klasy MainWindow.xaml
+    /// Logika interakcji dla klasy SimWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow() : base()
         {
             InitializeComponent();
         }

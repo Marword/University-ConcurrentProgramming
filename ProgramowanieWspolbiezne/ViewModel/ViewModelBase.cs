@@ -1,8 +1,9 @@
-﻿using Presentation.Model;
+﻿using Model;
+using Presentation.Model;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Presentation.ViewModel
+namespace ViewModel
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
@@ -12,6 +13,7 @@ namespace Presentation.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
         protected bool SetField<T>(ref T field, T value, IChecker<T> checker, T def, [CallerMemberName] string propertyName = "")
         {
             if (checker.CheckNotCorrect(value)) value = def;
@@ -25,6 +27,5 @@ namespace Presentation.ViewModel
             RaisePropertyChanged(propertyName);
             return true;
         }
-
     }
 }

@@ -1,6 +1,7 @@
-﻿using Presentation.Model;
+﻿using Model;
+using Presentation.Model;
 
-namespace Presentation.ViewModel
+namespace ViewModel
 {
     public class MainViewModel : ViewModelBase
     {

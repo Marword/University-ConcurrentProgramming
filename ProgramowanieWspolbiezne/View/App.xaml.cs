@@ -1,5 +1,5 @@
-﻿using Presentation.ViewModel;
-using System.Windows;
+﻿using System.Windows;
+using ViewModel;
 
 namespace Presentation.View
 {

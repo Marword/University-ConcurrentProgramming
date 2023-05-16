@@ -8,7 +8,7 @@ namespace Presentation.View.Views
     /// </summary>
     public partial class SimWindow : UserControl
     {
-        public SimWindow()
+        public SimWindow() : base()
         {
             InitializeComponent();
         }
