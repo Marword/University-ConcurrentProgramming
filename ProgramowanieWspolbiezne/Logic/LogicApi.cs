@@ -1,10 +1,10 @@
-﻿using Data;
-using Data.API;
-using Data.LoggerFiles;
-using Logic.API;
+﻿using BallSimulator.Data;
+using BallSimulator.Data.API;
+using BallSimulator.Data.LoggerFiles;
+using BallSimulator.Logic.API;
 using System.Diagnostics;
 
-namespace Logic;
+namespace BallSimulator.Logic;
 
 internal class LogicApi : LogicAbstractApi
 {

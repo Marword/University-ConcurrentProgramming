@@ -1,4 +1,4 @@
-﻿namespace Logic;
+﻿namespace BallSimulator.Data;
 
 public static class ThreadManager
 {

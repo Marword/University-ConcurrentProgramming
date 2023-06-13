@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Presentation.View.Properties
+namespace BallSimulator.Presentation.View.Properties
 {
 
 

@@ -1,9 +1,9 @@
 ﻿
-using Model.API;
+using BallSimulator.Model.API;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace ViewModel
+namespace BallSimulator.ViewModel
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {

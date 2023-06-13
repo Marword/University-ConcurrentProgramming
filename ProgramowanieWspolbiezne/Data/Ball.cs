@@ -1,7 +1,7 @@
-﻿using Data.API;
+﻿using BallSimulator.Data.API;
 
 
-namespace Data
+namespace BallSimulator.Data
 {
     public class Ball : IBall, IEquatable<Ball>
     {

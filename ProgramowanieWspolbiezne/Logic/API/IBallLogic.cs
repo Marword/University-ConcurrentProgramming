@@ -1,8 +1,8 @@
-﻿using Data;
-using Data.API;
+﻿using BallSimulator.Data;
+using BallSimulator.Data.API;
 using System.ComponentModel;
 
-namespace Logic.API
+namespace BallSimulator.Logic.API
 {
     public interface IBallLogic : IObservable<IBallLogic>, IObserver<IBall>, INotifyPropertyChanged
     {

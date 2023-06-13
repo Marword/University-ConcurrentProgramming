@@ -1,6 +1,6 @@
-﻿using Model;
+﻿using BallSimulator.Model;
 
-namespace ViewModel
+namespace BallSimulator.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {

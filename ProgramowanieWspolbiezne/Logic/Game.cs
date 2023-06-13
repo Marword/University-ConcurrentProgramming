@@ -1,4 +1,4 @@
-﻿namespace Data
+﻿namespace BallSimulator.Data
 {
     public class Game
     {

@@ -1,8 +1,8 @@
-﻿using Data.API;
+﻿using BallSimulator.Data.API;
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 
-namespace Data.LoggerFiles;
+namespace BallSimulator.Data.LoggerFiles;
 
 public class Logger : ILogger, IDisposable
 {

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Data.API;
+namespace BallSimulator.Data.API;
 
 public interface ILogger : IDisposable
 {

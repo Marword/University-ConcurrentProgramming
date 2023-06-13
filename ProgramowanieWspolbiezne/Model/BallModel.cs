@@ -1,9 +1,9 @@
-﻿using Logic.API;
-using Model.API;
+﻿using BallSimulator.Logic.API;
+using BallSimulator.Model.API;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Model
+namespace BallSimulator.Model
 {
     public class BallModel : IBallModel
     {

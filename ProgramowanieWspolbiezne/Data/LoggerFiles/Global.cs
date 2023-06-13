@@ -1,4 +1,4 @@
-﻿namespace Data.LoggerFiles;
+﻿namespace BallSimulator.Data.LoggerFiles;
 
 public static class Global
 {

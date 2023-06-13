@@ -1,7 +1,7 @@
-﻿using Data;
+﻿using BallSimulator.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Tests
+namespace BallSimulator.Tests
 {
     [TestClass]
     public class V2Test

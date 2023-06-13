@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace ViewModel
+namespace BallSimulator.ViewModel
 {
     public class StartSimCommand : CommandBase
     {

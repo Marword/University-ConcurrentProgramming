@@ -1,4 +1,4 @@
-﻿namespace Model.API
+﻿namespace BallSimulator.Model.API
 {
     public interface IChecker<T>
     {

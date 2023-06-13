@@ -1,9 +1,9 @@
-﻿using Model;
-using Model.API;
+﻿using BallSimulator.Model;
+using BallSimulator.Model.API;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
-namespace ViewModel
+namespace BallSimulator.ViewModel
 {
     public class SimViewModel : ViewModelBase, IObserver<IBallModel>
     {

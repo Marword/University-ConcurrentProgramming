@@ -1,7 +1,7 @@
-using Data.API;
+using BallSimulator.Data.API;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DataTests
+namespace BallSimulator.DataTests
 {
     [TestClass]
     public class DataApiTest

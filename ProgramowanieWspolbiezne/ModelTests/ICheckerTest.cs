@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Model.API;
-using Presentation.Model;
+using BallSimulator.Model.API;
+using BallSimulator.Model;
 
-namespace ModelTests
+namespace BallSimulator.Tests
 {
     [TestClass]
     public class ICheckerTest

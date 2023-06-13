@@ -1,11 +1,11 @@
-﻿using Data;
-using Data.API;
-using Logic.API;
+﻿using BallSimulator.Data;
+using BallSimulator.Data.API;
+using BallSimulator.Logic.API;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 
-namespace Logic
+namespace BallSimulator.Logic
 {
     internal class BallLogic : IBallLogic
     {

@@ -1,9 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ComponentModel;
 using System.Linq;
-using ViewModel;
+using BallSimulator.ViewModel;
 
-namespace ViewModelTests
+namespace BallSimulator.Tests
 {
     [TestClass]
     public class SimViewModelTest

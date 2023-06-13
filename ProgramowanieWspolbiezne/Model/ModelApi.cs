@@ -1,7 +1,7 @@
-﻿using Logic.API;
-using Model.API;
+﻿using BallSimulator.Logic.API;
+using BallSimulator.Model.API;
 
-namespace Model
+namespace BallSimulator.Model
 {
     internal class ModelApi : ModelAbstractApi
     {

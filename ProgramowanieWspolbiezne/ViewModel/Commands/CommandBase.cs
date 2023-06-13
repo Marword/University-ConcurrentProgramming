@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace ViewModel
+namespace BallSimulator.ViewModel
 {
     public abstract class CommandBase : ICommand
     {

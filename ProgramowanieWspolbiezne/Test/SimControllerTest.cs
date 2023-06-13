@@ -1,12 +1,12 @@
-﻿using Data.API;
-using Logic.API;
+﻿using BallSimulator.Data.API;
+using BallSimulator.Logic.API;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
-namespace Tests;
+namespace BallSimulator.Tests;
 
 [TestClass]
 public class LogicTest

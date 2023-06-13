@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using ViewModel;
+using BallSimulator.ViewModel;
 
-namespace Presentation.View
+namespace BallSimulator.Presentation.View
 {
     /// <summary>
     /// Logika interakcji dla klasy App.xaml

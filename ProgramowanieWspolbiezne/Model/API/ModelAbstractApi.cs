@@ -1,6 +1,6 @@
-﻿using Logic.API;
+﻿using BallSimulator.Logic.API;
 
-namespace Model.API
+namespace BallSimulator.Model.API
 {
     public abstract class ModelAbstractApi : IObserver<IBallLogic>, IObservable<IBallModel>, IDisposable
     {

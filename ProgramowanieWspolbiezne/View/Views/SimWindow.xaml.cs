@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 
 
-namespace Presentation.View.Views
+namespace BallSimulator.Presentation.View.Views
 {
     /// <summary>
     /// Logika interakcji dla klasy SimWindow.xaml

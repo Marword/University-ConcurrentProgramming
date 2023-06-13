@@ -1,7 +1,6 @@
-﻿using Data.API;
-using Logic;
+﻿using BallSimulator.Data.API;
 
-namespace Data;
+namespace BallSimulator.Data;
 
 internal static class Collisions
 {

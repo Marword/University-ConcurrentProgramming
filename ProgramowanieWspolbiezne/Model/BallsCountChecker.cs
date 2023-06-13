@@ -1,6 +1,6 @@
-﻿using Model.API;
+﻿using BallSimulator.Model.API;
 
-namespace Model
+namespace BallSimulator.Model
 {
     public class BallsCountChecker : IChecker<int>
     {

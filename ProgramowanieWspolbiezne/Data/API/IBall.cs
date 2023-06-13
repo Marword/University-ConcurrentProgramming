@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace Data.API;
+﻿namespace BallSimulator.Data.API;
 
 public interface IBall : IObservable<IBall>, IDisposable
 {
