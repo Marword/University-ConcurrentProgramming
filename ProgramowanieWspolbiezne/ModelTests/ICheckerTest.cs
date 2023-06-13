@@ -1,6 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using BallSimulator.Model;
 using BallSimulator.Model.API;
-using BallSimulator.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BallSimulator.Tests
 {

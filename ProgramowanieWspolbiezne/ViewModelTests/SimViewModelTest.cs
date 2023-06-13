@@ -1,7 +1,7 @@
+using BallSimulator.ViewModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ComponentModel;
 using System.Linq;
-using BallSimulator.ViewModel;
 
 namespace BallSimulator.Tests
 {

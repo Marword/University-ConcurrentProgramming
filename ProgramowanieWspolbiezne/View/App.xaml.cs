@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using BallSimulator.ViewModel;
+﻿using BallSimulator.ViewModel;
+using System.Windows;
 
 namespace BallSimulator.Presentation.View
 {
