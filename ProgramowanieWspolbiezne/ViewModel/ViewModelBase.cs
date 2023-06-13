@@ -1,5 +1,5 @@
-﻿using Model;
-using Presentation.Model;
+﻿
+using Model.API;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 

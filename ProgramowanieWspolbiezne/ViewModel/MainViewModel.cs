@@ -1,5 +1,4 @@
 ﻿using Model;
-using Presentation.Model;
 
 namespace ViewModel
 {

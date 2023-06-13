@@ -1,5 +1,5 @@
-﻿using Logic;
-using Logic.API;
+﻿using Logic.API;
+using Model.API;
 
 namespace Model
 {
@@ -9,13 +9,13 @@ namespace Model
 
         private readonly LogicAbstractApi _logic;
         private readonly ISet<IObserver<IBallModel>> _observers;
-        private readonly IDictionary<IBall, IBallModel> _ballToBallModel;
+        private readonly IDictionary<IBallLogic, IBallModel> _ballToBallModel;
         private IDisposable? _unsubscriber;
         public ModelApi(LogicAbstractApi? logic = default)
         {
             _logic = logic ?? LogicAbstractApi.CreateLogicApi();
             _observers = new HashSet<IObserver<IBallModel>>();
-            _ballToBallModel = new Dictionary<IBall, IBallModel>();
+            _ballToBallModel = new Dictionary<IBallLogic, IBallModel>();
         }
 
         public override void Start(int ballsCount)
@@ -24,15 +24,16 @@ namespace Model
             _logic.MakeBalls(ballsCount);
         }
 
-        public override void Stop()
+        public override void Dispose()
         {
             _logic.Dispose();
+            _unsubscriber?.Dispose();
         }
 
         #region Observer
 
 
-        public void Follow(IObservable<IBall> provider)
+        public void Follow(IObservable<IBallLogic> provider)
         {
             _unsubscriber = provider.Subscribe(this);
         }
@@ -43,7 +44,7 @@ namespace Model
         }
 
 
-        public override void OnNext(IBall ball)
+        public override void OnNext(IBallLogic ball)
         {
             _ballToBallModel.TryGetValue(ball, out var ballModel);
             if (ballModel is null)

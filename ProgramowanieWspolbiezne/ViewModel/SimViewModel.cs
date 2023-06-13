@@ -1,6 +1,5 @@
 ﻿using Model;
-using Presentation.Model;
-using Presentation.ViewModel;
+using Model.API;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -8,7 +7,7 @@ namespace ViewModel
 {
     public class SimViewModel : ViewModelBase, IObserver<IBallModel>
     {
-        private readonly ModelAbstractApi _model;
+        private ModelAbstractApi? _model;
         private readonly IChecker<int> _ballsCountChecker;
         private int _ballsCount = 8;
         private bool _isSimRunning = false;
@@ -28,13 +27,12 @@ namespace ViewModel
 
         }
 
-        public ObservableCollection<IBallModel> Balls { get; } = new();
+        public ObservableCollection<IBallModel> Balls { get; init; } = new();
         public ICommand StartSimCommand { get; init; }
         public ICommand StopSimCommand { get; init; }
 
-        public SimViewModel(ModelAbstractApi? model = default, IChecker<int>? ballsCountChecker = default) : base()
+        public SimViewModel(IChecker<int>? ballsCountChecker = default) : base()
         {
-            _model = model ?? ModelAbstractApi.CreateModelApi();
             _ballsCountChecker = ballsCountChecker ?? new BallsCountChecker();
 
             StartSimCommand = new StartSimCommand(this);
@@ -44,6 +42,7 @@ namespace ViewModel
 
         public void StartSim()
         {
+            _model = ModelAbstractApi.CreateModelApi();
             IsSimRunning = true;
             Follow(_model);
             _model.Start(BallsCount);
@@ -53,7 +52,7 @@ namespace ViewModel
         {
             IsSimRunning = false;
             Balls.Clear();
-            _model.Stop();
+            _model.Dispose();
         }
 
         #region Observer

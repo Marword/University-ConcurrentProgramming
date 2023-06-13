@@ -1,4 +1,5 @@
 ﻿using Logic.API;
+using Model.API;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -10,8 +11,10 @@ namespace Model
 
 
 
-        public Vector2 Coordinates => CalculateOffsetCoordinates(_ball.Coordinates);
-        public Vector2 Tempo => _ball.Tempo;
+        public float CoordinatX => _ball.Coordinates.X;
+        public float CoordinatY => _ball.Coordinates.Y;
+        public float TempoX => _ball.Tempo.X;
+        public float TempoY => _ball.Tempo.Y;
         public int Diameter => _ball.Diameter;
         public int Radius => _ball.Radius;
         private IBallLogic _ball;
@@ -24,10 +27,7 @@ namespace Model
             Follow(_ball);
         }
 
-        private Vector2 CalculateOffsetCoordinates(Vector2 coordinates)
-        {
-            return new Vector2(coordinates.X - Radius, coordinates.Y - Radius);
-        }
+
 
         #region Observer
 
@@ -49,7 +49,8 @@ namespace Model
 
         public void OnNext(IBallLogic ball)
         {
-            RaisePropertyChanged(nameof(Coordinates));
+            RaisePropertyChanged(nameof(CoordinatX));
+            RaisePropertyChanged(nameof(CoordinatY));
         }
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Model.API;
 using Presentation.Model;
 
 namespace ModelTests

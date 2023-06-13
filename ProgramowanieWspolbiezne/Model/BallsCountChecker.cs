@@ -1,6 +1,6 @@
-﻿using Logic;
+﻿using Model.API;
 
-namespace Presentation.Model
+namespace Model
 {
     public class BallsCountChecker : IChecker<int>
     {
@@ -18,7 +18,7 @@ namespace Presentation.Model
 
         public bool Check(int amount)
         {
-            return amount.Inside(_min, _max);
+            return amount >= _min && amount <= _max;
         }
 
         public bool CheckNotCorrect(int amount)

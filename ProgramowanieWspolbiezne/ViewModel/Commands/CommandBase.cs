@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Presentation.ViewModel
+namespace ViewModel
 {
     public abstract class CommandBase : ICommand
     {

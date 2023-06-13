@@ -1,5 +1,4 @@
-﻿
-namespace Presentation.Model
+﻿namespace Model.API
 {
     public interface IChecker<T>
     {
