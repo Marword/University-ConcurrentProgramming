@@ -3,26 +3,30 @@ using Logic.API;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace Tests;
 
 [TestClass]
-public class SimControllerTests
+public class LogicTest
 {
     private readonly int _testWidth;
     private readonly int _testHeight;
     private readonly int _testMinDiameter;
     private readonly int _testMaxDiameter;
     private readonly DataAbstractApi _dataFixture;
+    private readonly ILogger _loggerFixture;
 
     private LogicAbstractApi _controller;
-    private IEnumerable<Logic.API.IBallLogic>? _balls;
+    private IEnumerable<IBall>? _balls;
 
-    public SimControllerTests()
+    public LogicTest()
     {
-        _controller = LogicAbstractApi.CreateLogicApi(_dataFixture);
+
         _dataFixture = new DataFixture();
+        _loggerFixture = new LoggerFixture();
+        _controller = LogicAbstractApi.CreateLogicApi(_dataFixture, _loggerFixture);
 
         _testWidth = _dataFixture.GameWidth;
         _testHeight = _dataFixture.GameHeight;
@@ -39,7 +43,7 @@ public class SimControllerTests
     [TestMethod]
     public void SimTest()
     {
-        _controller = LogicAbstractApi.CreateLogicApi(_dataFixture);
+        _controller = LogicAbstractApi.CreateLogicApi(_dataFixture, _loggerFixture);
         Assert.IsNotNull(_controller);
 
         _balls = _controller.MakeBalls(2);
@@ -54,7 +58,7 @@ public class SimControllerTests
     [TestMethod]
     public void RandomBallsCreationTest()
     {
-        _controller = LogicAbstractApi.CreateLogicApi(_dataFixture);
+        _controller = LogicAbstractApi.CreateLogicApi(_dataFixture, _loggerFixture);
         Assert.IsNotNull(_controller);
 
         int ballNumber = 10;
@@ -62,7 +66,7 @@ public class SimControllerTests
         var balls = _controller.MakeBalls(ballNumber);
         int counter = 0;
 
-        foreach (Ball b in balls)
+        foreach (var b in balls)
         {
             Assert.IsNotNull(b);
             Assert.IsTrue(IsBetween(b.Diameter, _testMinDiameter, _testMaxDiameter));
@@ -86,5 +90,14 @@ public class SimControllerTests
         public override float MaxTempo => 50;
         public override int MinDiameter => 20;
         public override int MaxDiameter => 50;
+    }
+
+    private class LoggerFixture : ILogger
+    {
+        public void LogError(string message, [CallerLineNumber] int lineNumber = -1) { return; }
+        public void LogInfo(string message, [CallerLineNumber] int lineNumber = -1) { return; }
+        public void LogWarning(string message, [CallerLineNumber] int lineNumber = -1) { return; }
+
+        public void Dispose() { return; }
     }
 }
