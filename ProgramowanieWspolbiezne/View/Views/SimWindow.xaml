@@ -76,8 +76,8 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemContainerStyle>
                     <Style>
-                        <Setter Property="Canvas.Left" Value="{Binding Coordinates.X}" />
-                        <Setter Property="Canvas.Top" Value="{Binding Coordinates.Y}" />
+                        <Setter Property="Canvas.Left" Value="{Binding CoordinatX}" />
+                        <Setter Property="Canvas.Top" Value="{Binding CoordinatY}" />
                     </Style>
                 </ItemsControl.ItemContainerStyle>
                 <ItemsControl.ItemTemplate>
