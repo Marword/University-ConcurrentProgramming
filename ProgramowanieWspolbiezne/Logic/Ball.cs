@@ -1,5 +1,5 @@
 ﻿using Data;
-
+using Data.API;
 
 namespace Logic
 {
@@ -49,7 +49,7 @@ namespace Logic
 
         private readonly ISet<IObserver<IBall>> _observers;
         private Game _game;
-        private readonly IBallDto _ballDto;
+        private readonly Data.API.IBall _ballDto;
 
         private IDisposable? _disposer;
         private IDisposable? _unsubscriber;
@@ -57,9 +57,9 @@ namespace Logic
         private Vector2 _coordinates;
 
 
-        public Ball(int diameter, int coordX, int coordY, float tempoX, float tempoY, Game game, IBallDto? ballDto = default)
+        public Ball(int diameter, int coordX, int coordY, float tempoX, float tempoY, Game game, Data.API.IBall? ballDto = default)
             : this(diameter, new Vector2(coordX, coordY), new Vector2(tempoX, tempoY), game, ballDto) { }
-        public Ball(int diameter, Vector2 coordinates, Vector2 tempo, Game game, IBallDto? ballDto = default)
+        public Ball(int diameter, Vector2 coordinates, Vector2 tempo, Game game, Data.API.IBall? ballDto = default)
         {
             Diameter = diameter;
             Coordinates = coordinates;
@@ -125,7 +125,7 @@ namespace Logic
             return minDistanceSquared >= actualDistanceSquared;
         }
 
-        public void Follow(IObservable<IBallDto> provider)
+        public void Follow(IObservable<Data.API.IBall> provider)
         {
             _unsubscriber = provider.Subscribe(this);
         }
@@ -137,7 +137,7 @@ namespace Logic
 
         public void OnError(Exception error) => throw error;
 
-        public void OnNext(IBallDto ballDto)
+        public void OnNext(Data.API.IBall ballDto)
         {
             Coordinates = new Vector2(ballDto.CoordinatesX, ballDto.CoordinatesY);
             Tempo = new Vector2(ballDto.TempoX, ballDto.TempoY);

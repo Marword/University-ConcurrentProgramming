@@ -1,10 +1,12 @@
-﻿namespace Data
+﻿using Data.API;
+
+namespace Data
 {
     public class BallChangedEventArgs : EventArgs
     {
-        public IBallDto Ball { get; set; }
+        public IBall Ball { get; set; }
 
-        public BallChangedEventArgs(IBallDto ball)
+        public BallChangedEventArgs(IBall ball)
         {
             Ball = ball;
         }

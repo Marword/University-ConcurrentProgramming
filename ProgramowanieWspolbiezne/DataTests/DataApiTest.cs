@@ -1,4 +1,4 @@
-using Data;
+using Data.API;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DataTests

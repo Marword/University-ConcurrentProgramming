@@ -1,6 +1,8 @@
-﻿namespace Data
+﻿using Data.API;
+
+namespace Data
 {
-    public class BallDto : IBallDto
+    public class BallDto : IBall
     {
         public int Diameter { get; init; }
         public float TempoX { get; private set; }
@@ -8,7 +10,7 @@
         public float CoordinatesX { get; private set; }
         public float CoordinatesY { get; private set; }
 
-        private readonly ISet<IObserver<IBallDto>> _observers;
+        private readonly ISet<IObserver<IBall>> _observers;
 
         public BallDto(int diameter, float coordinatesX, float coordinatesY, float tempoX, float tempoY)
         {
@@ -18,7 +20,7 @@
             TempoX = tempoX;
             TempoY = tempoY;
 
-            _observers = new HashSet<IObserver<IBallDto>>();
+            _observers = new HashSet<IObserver<IBall>>();
         }
 
         public async Task Move(float moveX, float moveY)
@@ -43,13 +45,13 @@
             await Task.Delay(1);
         }
 
-        public IDisposable Subscribe(IObserver<IBallDto> observer)
+        public IDisposable Subscribe(IObserver<IBall> observer)
         {
             _observers.Add(observer);
             return new Unsubscriber(_observers, observer);
         }
 
-        private void TrackBall(IBallDto ball)
+        private void TrackBall(IBall ball)
         {
             foreach (var observer in _observers)
             {
@@ -59,10 +61,10 @@
 
         private class Unsubscriber : IDisposable
         {
-            private readonly ISet<IObserver<IBallDto>> _observers;
-            private readonly IObserver<IBallDto> _observer;
+            private readonly ISet<IObserver<IBall>> _observers;
+            private readonly IObserver<IBall> _observer;
 
-            public Unsubscriber(ISet<IObserver<IBallDto>> observers, IObserver<IBallDto> observer)
+            public Unsubscriber(ISet<IObserver<IBall>> observers, IObserver<IBall> observer)
             {
                 _observers = observers;
                 _observer = observer;

@@ -1,8 +1,8 @@
-﻿using Data.API;
+﻿using System.Numerics;
 
-namespace Logic;
+namespace Data.API;
 
-public interface IBall : IObservable<IBall>, IObserver<IBallDto>, IDisposable
+public interface IBall : IObservable<IBall>, IDisposable
 {
     int Diameter { get; }
     int Radius { get; }

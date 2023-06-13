@@ -1,4 +1,6 @@
-﻿namespace Data
+﻿using Data.API;
+
+namespace Data
 {
     internal class DataApi : DataAbstractApi
     {
