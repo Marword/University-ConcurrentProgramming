@@ -1,9 +1,10 @@
-﻿using Logic.API;
+﻿using Data;
+using Data.API;
 using System.ComponentModel;
 
-namespace Model
+namespace Logic.API
 {
-    public interface IBallModel : IObserver<IBallLogic>, INotifyPropertyChanged
+    public interface IBallLogic : IObservable<IBallLogic>, IObserver<IBall>, INotifyPropertyChanged
     {
         public int Diameter { get; }
         public int Radius { get; }

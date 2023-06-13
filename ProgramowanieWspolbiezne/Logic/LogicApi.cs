@@ -1,4 +1,7 @@
-﻿using Data.API;
+﻿using Data;
+using Data.API;
+using Data.LoggerFiles;
+using Logic.API;
 using System.Diagnostics;
 
 namespace Logic;
@@ -6,21 +9,21 @@ namespace Logic;
 internal class LogicApi : LogicAbstractApi
 {
 
-
-
-
-    public IList<IBall> _balls;
-    private readonly ISet<IObserver<IBall>> _observers;
+    public ICollection<IBall> _balls;
+    private readonly ISet<IObserver<IBallLogic>> _observers;
     private readonly DataAbstractApi _data;
     private readonly Game _game;
     private readonly Random _rand = new();
+    private readonly ILogger _logger;
 
 
-
-    public LogicApi(DataAbstractApi? data = default)
+    public LogicApi(DataAbstractApi? data = default, ILogger? logger = default)
     {
         _data = data ?? DataAbstractApi.CreateDataApi();
-        _observers = new HashSet<IObserver<IBall>>();
+        _observers = new HashSet<IObserver<IBallLogic>>();
+
+        _logger = logger ?? new Logger();
+
         _game = new Game(_data.GameHeight, _data.GameWidth);
         _balls = new List<IBall>();
     }
@@ -34,9 +37,9 @@ internal class LogicApi : LogicAbstractApi
             int diameter = GetRandomDiameter();
             Vector2 Coordinates = GetRandomPos(diameter);
             Vector2 Tempo = GetRandomTempo();
-            Ball newBall = new(diameter, Coordinates, Tempo, _game);
+            var newBall = new Ball(diameter, Coordinates, Tempo);
             _balls.Add(newBall);
-            TrackBall(newBall);
+            TrackBall(new BallLogic(newBall));
         }
         ThreadManager.SetValidator(HandleCollisions);
         ThreadManager.Start();
@@ -50,7 +53,7 @@ internal class LogicApi : LogicAbstractApi
         int x = _rand.Next(radius, _game.Width - radius);
         int y = _rand.Next(radius, _game.Height - radius);
 
-        return new Vector2(x, y);
+        return new Data.Vector2(x, y);
 
     }
 
@@ -66,11 +69,26 @@ internal class LogicApi : LogicAbstractApi
         return _rand.Next(_data.MinDiameter, _data.MaxDiameter + 1);
     }
 
+    private void HandleCollisions()
+    {
+
+        foreach (var (ball1, ball2) in Collisions.GetBallsCollisions(_balls))
+        {
+            (ball1.Tempo, ball2.Tempo, bool speedChanged) = Collisions.CalculateTempos(ball1, ball2);
+            if (speedChanged) _logger.LogInfo($"Balls collision detected: 1# {ball1}; 2# {ball2}");
+        }
+
+        foreach (var (ball, boundry, collisionsAxis) in Collisions.GetBoardCollisions(_balls, _game))
+        {
+            ball.Tempo = Collisions.CalculateTempo(ball, boundry, collisionsAxis);
+            _logger.LogInfo($"Boundry collision detected: {ball}");
+        }
+
+    }
+
     #region Provider
 
-
-
-    public override IDisposable Subscribe(IObserver<IBall> observer)
+    public override IDisposable Subscribe(IObserver<IBallLogic> observer)
     {
         _observers.Add(observer);
         return new Unsubscriber(_observers, observer);
@@ -78,7 +96,7 @@ internal class LogicApi : LogicAbstractApi
 
 
 
-    private void TrackBall(IBall ball)
+    private void TrackBall(IBallLogic ball)
     {
         foreach (var observer in _observers)
         {
@@ -95,26 +113,12 @@ internal class LogicApi : LogicAbstractApi
         _observers.Clear();
     }
 
-    private void HandleCollisions()
-    {
-        var collisions = Collisions.Get(_balls);
-        if (collisions.Count > 0)
-        {
-            foreach (var col in collisions)
-            {
-                var (ball1, ball2) = col;
-                (ball1.Tempo, ball2.Tempo) = Collisions.CalculateTempos(ball1, ball2);
-            }
-        }
-        Thread.Sleep(1);
-    }
-
     private class Unsubscriber : IDisposable
     {
-        private readonly ISet<IObserver<IBall>> _observers;
-        private readonly IObserver<IBall> _observer;
+        private readonly ISet<IObserver<IBallLogic>> _observers;
+        private readonly IObserver<IBallLogic> _observer;
 
-        public Unsubscriber(ISet<IObserver<IBall>> observers, IObserver<IBall> observer)
+        public Unsubscriber(ISet<IObserver<IBallLogic>> observers, IObserver<IBallLogic> observer)
         {
             _observers = observers;
             _observer = observer;
@@ -136,15 +140,21 @@ internal class LogicApi : LogicAbstractApi
         EndTransmisson();
         ThreadManager.Stop();
 
+#if DEBUG
         Trace.WriteLine($"Average Delta = {ThreadManager.AverageDeltaTime}");
         Trace.WriteLine($"Average Fps = {ThreadManager.AverageFps}");
         Trace.WriteLine($"Total Frame Count = {ThreadManager.FrameCount}");
+#endif
+        _logger.LogInfo($"Average Delta = {ThreadManager.AverageDeltaTime}");
+        _logger.LogInfo($"Average Fps = {ThreadManager.AverageFps}");
+        _logger.LogInfo($"Total Frame Count = {ThreadManager.FrameCount}");
 
         foreach (var ball in _balls)
         {
             ball.Dispose();
         }
         _balls.Clear();
+        _logger.Dispose();
     }
 
 

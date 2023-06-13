@@ -1,7 +1,7 @@
-﻿using Data;
-using Data.API;
+﻿using Data.API;
 
-namespace Logic
+
+namespace Data
 {
     public class Ball : IBall, IEquatable<Ball>
     {
@@ -48,29 +48,22 @@ namespace Logic
         }
 
         private readonly ISet<IObserver<IBall>> _observers;
-        private Game _game;
-        private readonly Data.API.IBall _ballDto;
+        private readonly IDisposable? _disposer;
 
-        private IDisposable? _disposer;
-        private IDisposable? _unsubscriber;
         private Vector2 _tempo;
         private Vector2 _coordinates;
 
-
-        public Ball(int diameter, int coordX, int coordY, float tempoX, float tempoY, Game game, Data.API.IBall? ballDto = default)
-            : this(diameter, new Vector2(coordX, coordY), new Vector2(tempoX, tempoY), game, ballDto) { }
-        public Ball(int diameter, Vector2 coordinates, Vector2 tempo, Game game, Data.API.IBall? ballDto = default)
+        public Ball(int diameter, Vector2 coordinates, Vector2 tempo)
         {
             Diameter = diameter;
             Coordinates = coordinates;
             Tempo = tempo;
             Radius = diameter / 2;
-            _game = game;
-            _ballDto = ballDto ?? new BallDto(Diameter, Coordinates.X, Coordinates.Y, Tempo.X, Tempo.Y);
+
 
             _observers = new HashSet<IObserver<IBall>>();
             _disposer = ThreadManager.Add<float>(Move);
-            Follow(_ballDto);
+
         }
 
         public void Move(float delta)
@@ -78,42 +71,8 @@ namespace Logic
 
             if (Tempo.IsZero()) return;
 
-            float strength = (delta * 0.01f).Clamp(0f, 1f);
-
-            var move = Tempo * strength;
-            var (coordX, coordY) = Coordinates;
-            var (newTempoX, newTempoY) = Tempo;
-            var (boundXx, boundXy) = _game.boundX;
-
-            if (!coordX.Inside(boundXx, boundXy, Radius))
-            {
-                if (coordX <= boundXx + Radius)
-                {
-                    newTempoX = MathF.Abs(newTempoX);
-                }
-                else
-                {
-                    newTempoX = -MathF.Abs(newTempoX);
-                }
-
-            }
-            var (boundYx, boundYy) = _game.boundY;
-
-            if (!coordY.Inside(boundYx, boundYy, Radius))
-            {
-                if (coordY <= boundYx + Radius)
-                {
-                    newTempoY = MathF.Abs(newTempoY);
-                }
-                else
-                {
-                    newTempoY = -MathF.Abs(newTempoY);
-                }
-
-            }
-
-            _ballDto?.SetTempo(newTempoX, newTempoY);
-            _ballDto?.Move(move.X, move.Y);
+            float strength = delta.Clamp(0f, 100f) * 0.01f;
+            Coordinates += Tempo * strength;
         }
 
         public bool Touches(IBall ball)
@@ -125,23 +84,7 @@ namespace Logic
             return minDistanceSquared >= actualDistanceSquared;
         }
 
-        public void Follow(IObservable<Data.API.IBall> provider)
-        {
-            _unsubscriber = provider.Subscribe(this);
-        }
-
-        public void OnCompleted()
-        {
-            _unsubscriber?.Dispose();
-        }
-
-        public void OnError(Exception error) => throw error;
-
-        public void OnNext(Data.API.IBall ballDto)
-        {
-            Coordinates = new Vector2(ballDto.CoordinatesX, ballDto.CoordinatesY);
-            Tempo = new Vector2(ballDto.TempoX, ballDto.TempoY);
-        }
+        #region Provider
 
         public IDisposable Subscribe(IObserver<IBall> observer)
         {
@@ -157,8 +100,6 @@ namespace Logic
                 observer.OnNext(ball);
             }
         }
-
-
 
         private class Unsubscriber : IDisposable
         {
@@ -176,6 +117,8 @@ namespace Logic
                 _observers.Remove(_observer);
             }
         }
+
+        #endregion
 
         public void Dispose()
         {

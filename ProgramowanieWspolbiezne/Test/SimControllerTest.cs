@@ -1,5 +1,5 @@
 ﻿using Data.API;
-using Logic;
+using Logic.API;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ public class SimControllerTests
     private readonly DataAbstractApi _dataFixture;
 
     private LogicAbstractApi _controller;
-    private IEnumerable<Logic.IBall>? _balls;
+    private IEnumerable<Logic.API.IBallLogic>? _balls;
 
     public SimControllerTests()
     {

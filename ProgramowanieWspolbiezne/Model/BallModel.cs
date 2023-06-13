@@ -1,4 +1,4 @@
-﻿using Logic;
+﻿using Logic.API;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -14,11 +14,11 @@ namespace Model
         public Vector2 Tempo => _ball.Tempo;
         public int Diameter => _ball.Diameter;
         public int Radius => _ball.Radius;
-        private IBall _ball;
+        private IBallLogic _ball;
         private IDisposable? _unsubscriber;
 
 
-        public BallModel(IBall ball)
+        public BallModel(IBallLogic ball)
         {
             _ball = ball;
             Follow(_ball);
@@ -32,7 +32,7 @@ namespace Model
         #region Observer
 
 
-        public void Follow(IObservable<IBall> privider)
+        public void Follow(IObservable<IBallLogic> privider)
         {
             _unsubscriber = privider.Subscribe(this);
         }
@@ -47,7 +47,7 @@ namespace Model
             throw error;
         }
 
-        public void OnNext(IBall ball)
+        public void OnNext(IBallLogic ball)
         {
             RaisePropertyChanged(nameof(Coordinates));
         }

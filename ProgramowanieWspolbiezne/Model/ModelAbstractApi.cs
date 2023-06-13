@@ -1,15 +1,15 @@
-﻿using Logic;
+﻿using Logic.API;
 
 namespace Model
 {
 
-    public abstract class ModelAbstractApi : IObserver<IBall>, IObservable<IBallModel>
+    public abstract class ModelAbstractApi : IObserver<IBallLogic>, IObservable<IBallModel>
     {
         public abstract void Start(int count);
         public abstract void Stop();
         public abstract void OnCompleted();
         public virtual void OnError(Exception error) => throw error;
-        public abstract void OnNext(IBall value);
+        public abstract void OnNext(IBallLogic value);
         public abstract IDisposable Subscribe(IObserver<IBallModel> observer);
 
         public static ModelAbstractApi CreateModelApi(LogicAbstractApi? logic = default)
