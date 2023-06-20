@@ -23,9 +23,9 @@ public class Logger : ILogger, IDisposable
         Start();
     }
 
-    public void LogInfo(string message, [CallerLineNumber] int lineNumber = -1) => Log(message, LogLevel.Info, lineNumber);
-    public void LogWarning(string message, [CallerLineNumber] int lineNumber = -1) => Log(message, LogLevel.Warning, lineNumber);
-    public void LogError(string message, [CallerLineNumber] int lineNumber = -1) => Log(message, LogLevel.Error, lineNumber);
+    public void LogInfo(string message) => Log(message, LogLevel.Info);
+    public void LogWarning(string message) => Log(message, LogLevel.Warning);
+    public void LogError(string message) => Log(message, LogLevel.Error);
 
     private void Start()
     {
@@ -39,9 +39,15 @@ public class Logger : ILogger, IDisposable
         _writingAction?.Wait();
     }
 
-    private void Log(string message, LogLevel level, int lineNumber)
+    private void Log(string message, LogLevel level)
     {
-        _logQueue.Add(new LogEntry(level, message, lineNumber));
+        string timestamp = GetTimestamp().ToString("yyyy-MM-dd HH:mm:ss");
+        _logQueue.Add(new LogEntry(level, message, timestamp));
+    }
+
+    private DateTime GetTimestamp()
+    {
+        return DateTime.Now;
     }
 
     private async void WriteLoop()

@@ -3,6 +3,9 @@ using BallSimulator.Data.API;
 using BallSimulator.Data.LoggerFiles;
 using BallSimulator.Logic.API;
 using System.Diagnostics;
+using Timer = System.Timers.Timer;
+using System.Timers;
+
 
 namespace BallSimulator.Logic;
 
@@ -15,6 +18,7 @@ internal class LogicApi : LogicAbstractApi
     private readonly Game _game;
     private readonly Random _rand = new();
     private readonly ILogger _logger;
+    private Timer _timer;
 
 
     public LogicApi(DataAbstractApi? data = default, ILogger? logger = default)
@@ -22,10 +26,22 @@ internal class LogicApi : LogicAbstractApi
         _data = data ?? DataAbstractApi.CreateDataApi();
         _observers = new HashSet<IObserver<IBallLogic>>();
 
+        _timer = new Timer(5000);
+        _timer.Elapsed += TimerElapsed;
+        _timer.Start();
+
         _logger = logger ?? new Logger();
 
         _game = new Game(_data.GameHeight, _data.GameWidth);
         _balls = new List<IBall>();
+    }
+
+    private void TimerElapsed(object e, ElapsedEventArgs args)
+    {
+        foreach (var ball in _balls)
+        {
+            _logger.LogInfo($"Ball Info: Diameter = {ball.Diameter}, Position = {ball.Coordinates}, Velocity = {ball.Tempo}");
+        }
     }
 
     public override IEnumerable<IBall> MakeBalls(int count)
@@ -75,13 +91,11 @@ internal class LogicApi : LogicAbstractApi
         foreach (var (ball1, ball2) in Collisions.GetBallsCollisions(_balls))
         {
             (ball1.Tempo, ball2.Tempo, bool speedChanged) = Collisions.CalculateTempos(ball1, ball2);
-            if (speedChanged) _logger.LogInfo($"Balls collision detected: 1# {ball1}; 2# {ball2}");
         }
 
         foreach (var (ball, boundry, collisionsAxis) in Collisions.GetBoardCollisions(_balls, _game))
         {
             ball.Tempo = Collisions.CalculateTempo(ball, boundry, collisionsAxis);
-            _logger.LogInfo($"Boundry collision detected: {ball}");
         }
 
     }
@@ -153,6 +167,8 @@ internal class LogicApi : LogicAbstractApi
         {
             ball.Dispose();
         }
+        _timer.Stop();
+        _timer.Dispose();
         _balls.Clear();
         _logger.Dispose();
     }

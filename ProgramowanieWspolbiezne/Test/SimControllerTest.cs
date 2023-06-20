@@ -94,9 +94,9 @@ public class LogicTest
 
     private class LoggerFixture : ILogger
     {
-        public void LogError(string message, [CallerLineNumber] int lineNumber = -1) { return; }
-        public void LogInfo(string message, [CallerLineNumber] int lineNumber = -1) { return; }
-        public void LogWarning(string message, [CallerLineNumber] int lineNumber = -1) { return; }
+        public void LogError(string message) { return; }
+        public void LogInfo(string message) { return; }
+        public void LogWarning(string message) { return; }
 
         public void Dispose() { return; }
     }

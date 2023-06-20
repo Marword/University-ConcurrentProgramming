@@ -1,10 +1,15 @@
-﻿namespace BallSimulator.Data.LoggerFiles;
+﻿using BallSimulator.Data.LoggerFiles;
 
-public record LogEntry(
-    LogLevel Level,
-    string Message,
-    int LineNumber
-    )
+public class LogEntry
 {
-    public string TimeStamp { get; init; } = DateTime.Now.ToString("dd-MM-yyyy - HH:mm:ss:fff");
+    public LogLevel Level { get; }
+    public string Message { get; }
+    public string Timestamp { get; }
+
+    public LogEntry(LogLevel level, string message, string timestamp)
+    {
+        Level = level;
+        Message = message;
+        Timestamp = timestamp;
+    }
 }

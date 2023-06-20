@@ -42,15 +42,14 @@ internal class LogFileWriter : ILogWriter
     private void CreateAndAppendLog(LogEntry entry)
     {
         _logBuilder.Append('[')
-                .Append(entry.TimeStamp)
-                .Append("] : ")
-                .Append(entry.Level)
-                .Append(" @ ")
-                .Append(entry.LineNumber)
-                .Append("  \t")
-                .Append(entry.Message)
-                .AppendLine();
+            .Append(entry.Timestamp)
+            .Append("] : ")
+            .Append(entry.Level)
+            .Append("  \t")
+            .Append(entry.Message)
+            .AppendLine();
     }
+
 
     private async Task Write()
     {
